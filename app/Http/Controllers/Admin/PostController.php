@@ -74,9 +74,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit',compact('post'));
     }
 
     /**
@@ -86,9 +86,25 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:150',
+            'content' => 'required',
+            'published_at' => 'nullable|date|before_or_equal:today'
+        ]);
+
+        $data = $request->all();
+
+        if ($post->title != $data['title']) {
+            $slug = Post::getUniqueSlug($data['title']);
+        }
+
+        $data['slug'] = $slug;
+
+        $post->update($data);
+        
+        return redirect()->route('admin.posts.index');
     }
 
     /**
@@ -97,8 +113,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return redirect()->route('admin.posts.index');
     }
 }
