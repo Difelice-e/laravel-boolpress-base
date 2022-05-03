@@ -35,12 +35,12 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Salva</button>
-        <form action="{{route('admin.posts.destroy',$post)}}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-small btn-danger">Elimina</button>
-        </form>
-      </form>
+    </form>
+    <form action="{{route('admin.posts.destroy',$post)}}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-small btn-danger">Elimina</button>
+    </form>
 </div>
 
 @endsection
